@@ -464,7 +464,8 @@ def render_sidebar():
 
             **Privacy:**
             - Documents are processed locally
-            - Only text chunks sent to LLM API
+            - Only relevant text chunks sent to LLM API
+            - Use Ollama for fully offline/private processing
 
             **Links:**
             - [GitHub Repository](https://github.com)
@@ -515,8 +516,44 @@ def render_main_content():
             unsafe_allow_html=True
         )
 
+    # Feature highlights - collapsible
+    with st.expander("✨ Why PageIndex? Click to learn more", expanded=False):
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.markdown("""
+            **🌳 Tree-Structured Indexing**
+
+            Unlike traditional RAG that chunks documents blindly, PageIndex builds a
+            hierarchical tree that preserves document structure - chapters, sections,
+            and their relationships.
+            """)
+
+        with col2:
+            st.markdown("""
+            **🚀 No Vector Database**
+
+            No embeddings, no vector stores, no complex setup. PageIndex uses the LLM
+            itself to navigate the document tree and find relevant sections intelligently.
+            """)
+
+        with col3:
+            st.markdown("""
+            **🔒 Privacy-Conscious**
+
+            Your document stays local. Only small text chunks are sent to the LLM
+            when answering questions - never the entire document. Save indexes locally
+            for offline use.
+            """)
+
+        st.info("""
+        **How it works:** When you ask a question, PageIndex navigates the document tree to find relevant sections,
+        then sends only those specific text chunks to the LLM. This is more efficient and preserves context better
+        than sending random chunks from vector similarity search.
+        """)
+
     # Create tabs for different upload options
-    tab_pdf, tab_json = st.tabs(["Upload PDF", "Load Saved Index"])
+    tab_pdf, tab_json = st.tabs(["📄 Upload PDF", "📁 Load Saved Index"])
 
     with tab_pdf:
         # File uploader for PDF
@@ -651,8 +688,8 @@ def render_footer():
     st.markdown(
         """
         <div style="text-align: center; color: #888; font-size: 0.85em; padding: 1em 0;">
-            <strong>Disclaimer:</strong> This is a free, open-source tool provided "as is" without warranty or support.<br>
-            Do not upload sensitive or confidential documents. Document content is sent to LLM APIs for processing.<br>
+            <strong>Privacy:</strong> Documents are processed locally. Only relevant text chunks are sent to the LLM API when answering questions.<br>
+            For sensitive documents, use a local model via Ollama. Free tool provided "as is" without warranty or support.<br>
             <br>
             <a href="https://github.com/anthropics/pageindex-document-qa" target="_blank">GitHub</a> ·
             Built with <a href="https://github.com/VectifyAI/PageIndex" target="_blank">PageIndex</a> ·
