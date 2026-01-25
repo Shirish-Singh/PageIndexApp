@@ -49,6 +49,34 @@ streamlit run app.py
 
 Open http://localhost:8501 in your browser.
 
+## Deploy to Streamlit Cloud
+
+You can deploy this app for free on Streamlit Cloud:
+
+### 1. Fork/Push to GitHub
+
+Push your code to a GitHub repository.
+
+### 2. Connect to Streamlit Cloud
+
+1. Go to [share.streamlit.io](https://share.streamlit.io)
+2. Click "New app"
+3. Select your repository and `app.py`
+
+### 3. Configure Secrets
+
+In Streamlit Cloud dashboard, go to **Settings > Secrets** and add:
+
+```toml
+LLM_PROVIDER = "groq"
+LLM_MODEL = "llama-3.1-8b-instant"
+GROQ_API_KEY = "your_groq_api_key_here"
+```
+
+### 4. Deploy!
+
+Click "Deploy" and your app will be live in minutes.
+
 ## Usage
 
 ### Basic Workflow

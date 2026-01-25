@@ -33,6 +33,7 @@ ENV/
 
 # Environment files (contain secrets)
 .env
+.streamlit/secrets.toml
 
 # Logs
 logs/

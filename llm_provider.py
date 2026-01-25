@@ -31,6 +31,27 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def get_secret(key: str, default: str = "") -> str:
+    """
+    Get a secret from environment variables or Streamlit secrets.
+    Supports both local development (.env) and Streamlit Cloud deployment.
+    """
+    # First try environment variable
+    value = os.getenv(key, "")
+    if value:
+        return value
+
+    # Then try Streamlit secrets (for Streamlit Cloud)
+    try:
+        import streamlit as st
+        if hasattr(st, 'secrets') and key in st.secrets:
+            return st.secrets[key]
+    except Exception:
+        pass
+
+    return default
+
+
 @dataclass
 class LLMConfig:
     """Configuration for LLM provider."""
@@ -72,7 +93,7 @@ class GroqProvider(BaseLLMProvider):
 
     def __init__(self, config: LLMConfig):
         super().__init__(config)
-        self.api_key = config.api_key or os.getenv("GROQ_API_KEY")
+        self.api_key = config.api_key or get_secret("GROQ_API_KEY")
         if not self.api_key:
             raise ValueError("GROQ_API_KEY environment variable is required")
 
@@ -125,7 +146,7 @@ class OpenAIProvider(BaseLLMProvider):
 
     def __init__(self, config: LLMConfig):
         super().__init__(config)
-        self.api_key = config.api_key or os.getenv("OPENAI_API_KEY") or os.getenv("CHATGPT_API_KEY")
+        self.api_key = config.api_key or get_secret("OPENAI_API_KEY") or get_secret("CHATGPT_API_KEY")
         if not self.api_key:
             raise ValueError("OPENAI_API_KEY or CHATGPT_API_KEY environment variable is required")
 
@@ -226,8 +247,8 @@ _current_config: Optional[LLMConfig] = None
 
 
 def get_default_config() -> LLMConfig:
-    """Get default LLM configuration from environment variables."""
-    provider = os.getenv("LLM_PROVIDER", "groq").lower()
+    """Get default LLM configuration from environment variables or Streamlit secrets."""
+    provider = get_secret("LLM_PROVIDER", "groq").lower()
 
     # Provider-specific defaults
     model_defaults = {
@@ -238,10 +259,10 @@ def get_default_config() -> LLMConfig:
 
     return LLMConfig(
         provider=provider,
-        model=os.getenv("LLM_MODEL", model_defaults.get(provider, "")),
-        api_key=os.getenv(f"{provider.upper()}_API_KEY"),
-        temperature=float(os.getenv("LLM_TEMPERATURE", "0.7")),
-        max_tokens=int(os.getenv("LLM_MAX_TOKENS", "8192")),
+        model=get_secret("LLM_MODEL", model_defaults.get(provider, "")),
+        api_key=get_secret(f"{provider.upper()}_API_KEY"),
+        temperature=float(get_secret("LLM_TEMPERATURE", "0.7")),
+        max_tokens=int(get_secret("LLM_MAX_TOKENS", "8192")),
     )
 
 
@@ -269,7 +290,7 @@ def set_provider(provider_name: str, **kwargs) -> BaseLLMProvider:
         raise ValueError(f"Unknown provider: {provider_name}. Supported: {list(PROVIDERS.keys())}")
 
     # Get model from kwargs, or from environment, or use provider default
-    model = kwargs.get("model") or os.getenv("LLM_MODEL", "")
+    model = kwargs.get("model") or get_secret("LLM_MODEL", "")
 
     config = LLMConfig(
         provider=provider_name,
