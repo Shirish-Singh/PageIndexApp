@@ -694,13 +694,16 @@ def render_main_content():
                         import traceback
                         st.code(traceback.format_exc())
     else:
-        st.markdown("""
-            <div class="empty-state">
-                <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📄</div>
-                <h3>No Document Loaded</h3>
-                <p>Upload a PDF or load a saved index to get started</p>
-            </div>
-        """, unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.markdown("""
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem; opacity: 0.7;">📄</div>
+                    <h3 style="margin: 0.5rem 0; font-weight: 600;">No Document Loaded</h3>
+                    <p style="opacity: 0.7; margin: 0;">Upload a PDF or load a saved index to get started</p>
+                </div>
+            """, unsafe_allow_html=True)
 
 
 def render_footer():
@@ -996,10 +999,136 @@ def main():
             margin: 1.5rem 0;
         }
 
-        /* Hide Streamlit branding */
-        #MainMenu {visibility: hidden;}
+        /* Hide Streamlit footer but keep header for settings access */
         footer {visibility: hidden;}
-        header {visibility: hidden;}
+        
+        /* Style the header/toolbar */
+        header[data-testid="stHeader"] {
+            background: transparent;
+        }
+        
+        /* ========== DARK MODE SUPPORT ========== */
+        /* Streamlit dark mode detection */
+        @media (prefers-color-scheme: dark) {
+            .main .block-container {
+                background: #0f172a;
+            }
+        }
+        
+        /* Streamlit's dark theme class */
+        [data-testid="stAppViewContainer"][data-theme="dark"],
+        .stApp[data-theme="dark"] {
+            background: #0f172a;
+        }
+        
+        /* Dark mode: Hero header */
+        [data-testid="stAppViewContainer"][data-theme="dark"] .hero-header,
+        [data-theme="dark"] .hero-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-color: #475569;
+        }
+        
+        /* Dark mode: Feature cards */
+        [data-testid="stAppViewContainer"][data-theme="dark"] .feature-card,
+        [data-theme="dark"] .feature-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        [data-testid="stAppViewContainer"][data-theme="dark"] .feature-card:hover,
+        [data-theme="dark"] .feature-card:hover {
+            background: #1e3a3a;
+            border-color: #0d9488;
+        }
+        
+        [data-testid="stAppViewContainer"][data-theme="dark"] .feature-title,
+        [data-theme="dark"] .feature-title {
+            color: #f1f5f9;
+        }
+        
+        [data-testid="stAppViewContainer"][data-theme="dark"] .feature-desc,
+        [data-theme="dark"] .feature-desc {
+            color: #94a3b8;
+        }
+        
+        /* Dark mode: Empty state */
+        [data-testid="stAppViewContainer"][data-theme="dark"] .empty-state,
+        [data-theme="dark"] .empty-state {
+            background: #1e293b;
+            border-color: #475569;
+        }
+        
+        [data-testid="stAppViewContainer"][data-theme="dark"] .empty-state h3,
+        [data-theme="dark"] .empty-state h3 {
+            color: #e2e8f0;
+        }
+        
+        [data-testid="stAppViewContainer"][data-theme="dark"] .empty-state p,
+        [data-theme="dark"] .empty-state p {
+            color: #94a3b8;
+        }
+        
+        /* Dark mode: Status badge */
+        [data-testid="stAppViewContainer"][data-theme="dark"] .status-ready,
+        [data-theme="dark"] .status-ready {
+            background: #134e4a;
+            color: #5eead4;
+        }
+        
+        /* Dark mode: Footer */
+        [data-testid="stAppViewContainer"][data-theme="dark"] .footer-text,
+        [data-theme="dark"] .footer-text {
+            color: #64748b;
+        }
+        
+        /* Dark mode: Sidebar */
+        [data-testid="stAppViewContainer"][data-theme="dark"] [data-testid="stSidebar"],
+        [data-theme="dark"] [data-testid="stSidebar"] {
+            background: #1e293b;
+            border-right-color: #334155;
+        }
+        
+        /* Dark mode: Tabs */
+        [data-testid="stAppViewContainer"][data-theme="dark"] .stTabs [data-baseweb="tab-list"],
+        [data-theme="dark"] .stTabs [data-baseweb="tab-list"] {
+            background: #1e293b;
+        }
+        
+        [data-testid="stAppViewContainer"][data-theme="dark"] .stTabs [data-baseweb="tab"],
+        [data-theme="dark"] .stTabs [data-baseweb="tab"] {
+            color: #94a3b8;
+        }
+        
+        [data-testid="stAppViewContainer"][data-theme="dark"] .stTabs [aria-selected="true"],
+        [data-theme="dark"] .stTabs [aria-selected="true"] {
+            background: #334155 !important;
+            color: #f1f5f9 !important;
+        }
+        
+        /* Dark mode: Chat messages */
+        [data-testid="stAppViewContainer"][data-theme="dark"] [data-testid="stChatMessageContent"],
+        [data-theme="dark"] [data-testid="stChatMessageContent"] {
+            color: #e2e8f0;
+        }
+        
+        /* Dark mode: Alerts */
+        [data-testid="stAppViewContainer"][data-theme="dark"] .stInfo,
+        [data-theme="dark"] .stInfo {
+            background: #0c4a6e;
+            border-left-color: #0ea5e9;
+        }
+        
+        [data-testid="stAppViewContainer"][data-theme="dark"] .stSuccess,
+        [data-theme="dark"] .stSuccess {
+            background: #14532d;
+            border-left-color: #22c55e;
+        }
+        
+        /* Dark mode: Divider */
+        [data-testid="stAppViewContainer"][data-theme="dark"] hr,
+        [data-theme="dark"] hr {
+            background: #334155;
+        }
         </style>
     """, unsafe_allow_html=True)
 

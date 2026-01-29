@@ -1,0 +1,8 @@
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+
+# No custom theme = allows user to switch between light/dark in settings
+# Streamlit will auto-detect system preference
