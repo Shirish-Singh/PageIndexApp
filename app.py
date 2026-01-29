@@ -349,7 +349,12 @@ STRICT RULES:
 def render_sidebar():
     """Render the sidebar with configuration options."""
     with st.sidebar:
-        st.header("Configuration")
+        st.markdown("""
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <span style="font-size: 1.8rem;">⚙️</span>
+                <h2 style="margin: 0.5rem 0 0 0; font-size: 1.3rem; font-weight: 600;">Configuration</h2>
+            </div>
+        """, unsafe_allow_html=True)
 
         # Get current/stored provider
         provider_options = list(PROVIDERS.keys())
@@ -458,21 +463,21 @@ def render_sidebar():
             **PageIndex Document QA** is a free, open-source tool for intelligent document understanding.
 
             **How it works:**
-            - Builds a tree-structured index from your PDF
-            - Uses LLM to navigate and answer questions
-            - No vector database or embeddings needed
+            - 🌳 Builds a tree-structured index from your PDF
+            - 🤖 Uses LLM to navigate and answer questions
+            - ⚡ No vector database or embeddings needed
 
             **Privacy:**
-            - Documents are processed locally
-            - Only relevant text chunks sent to LLM API
-            - Use Ollama for fully offline/private processing
+            - 📁 Documents are processed locally
+            - 🔒 Only relevant text chunks sent to LLM API
+            - 🏠 Use Ollama for fully offline/private processing
 
             **Links:**
-            - [GitHub Repository](https://github.com)
+            - [GitHub Repository](https://github.com/Shirish-Singh/PageIndexApp)
             - [PageIndex Library](https://github.com/VectifyAI/PageIndex)
 
             ---
-            *Free to use · No support provided*
+            *Made with ❤️ · Free to use*
             """)
 
 
@@ -499,22 +504,14 @@ def load_index_from_json(json_file) -> dict:
 
 def render_main_content():
     """Render the main content area."""
-    # Header with logo and title
-    col_title, col_badge = st.columns([4, 1])
-    with col_title:
-        st.title("📚 PageIndex Document QA")
-        st.markdown("*Upload PDFs and ask questions using AI-powered tree-structured indexing*")
-    with col_badge:
-        st.markdown(
-            """
-            <div style="text-align: right; padding-top: 1em;">
-                <span style="background: #28a745; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.8em;">
-                    Free & Open Source
-                </span>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+    # Hero Header
+    st.markdown("""
+        <div class="hero-header">
+            <h1>📚 PageIndex Document QA</h1>
+            <p>Upload PDFs and ask questions using AI-powered tree-structured indexing</p>
+            <span class="hero-badge">Open Source</span>
+        </div>
+    """, unsafe_allow_html=True)
 
     # Feature highlights - collapsible
     with st.expander("✨ Why PageIndex? Click to learn more", expanded=False):
@@ -522,30 +519,42 @@ def render_main_content():
 
         with col1:
             st.markdown("""
-            **🌳 Tree-Structured Indexing**
-
-            Unlike traditional RAG that chunks documents blindly, PageIndex builds a
-            hierarchical tree that preserves document structure - chapters, sections,
-            and their relationships.
-            """)
+            <div class="feature-card">
+                <div class="feature-icon">🌳</div>
+                <div class="feature-title">Tree-Structured Indexing</div>
+                <div class="feature-desc">
+                    Unlike traditional RAG that chunks documents blindly, PageIndex builds a
+                    hierarchical tree that preserves document structure - chapters, sections,
+                    and their relationships.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
         with col2:
             st.markdown("""
-            **🚀 No Vector Database**
-
-            No embeddings, no vector stores, no complex setup. PageIndex uses the LLM
-            itself to navigate the document tree and find relevant sections intelligently.
-            """)
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <div class="feature-title">No Vector Database</div>
+                <div class="feature-desc">
+                    No embeddings, no vector stores, no complex setup. PageIndex uses the LLM
+                    itself to navigate the document tree and find relevant sections intelligently.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
         with col3:
             st.markdown("""
-            **🔒 Privacy-Conscious**
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Privacy-Conscious</div>
+                <div class="feature-desc">
+                    Your document stays local. Only small text chunks are sent to the LLM
+                    when answering questions - never the entire document.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
-            Your document stays local. Only small text chunks are sent to the LLM
-            when answering questions - never the entire document. Save indexes locally
-            for offline use.
-            """)
-
+        st.markdown("<br>", unsafe_allow_html=True)
         st.info("""
         **How it works:** When you ask a question, PageIndex navigates the document tree to find relevant sections,
         then sends only those specific text chunks to the LLM. This is more efficient and preserves context better
@@ -646,8 +655,14 @@ def render_main_content():
 
     # Chat interface
     if st.session_state.index_data:
-        st.divider()
-        st.subheader("Ask Questions")
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("""
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                <span style="font-size: 1.5rem;">💬</span>
+                <h3 style="margin: 0; font-weight: 600; color: #1f2937;">Ask Questions</h3>
+                <span class="status-badge status-ready">● Ready</span>
+            </div>
+        """, unsafe_allow_html=True)
 
         # Display chat history
         for message in st.session_state.chat_history:
@@ -679,25 +694,27 @@ def render_main_content():
                         import traceback
                         st.code(traceback.format_exc())
     else:
-        st.info("Upload a PDF document to get started.")
+        st.markdown("""
+            <div class="empty-state">
+                <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📄</div>
+                <h3>No Document Loaded</h3>
+                <p>Upload a PDF or load a saved index to get started</p>
+            </div>
+        """, unsafe_allow_html=True)
 
 
 def render_footer():
     """Render the footer with disclaimer."""
-    st.markdown("---")
-    st.markdown(
-        """
-        <div style="text-align: center; color: #888; font-size: 0.85em; padding: 1em 0;">
-            <strong>Privacy:</strong> Documents are processed locally. Only relevant text chunks are sent to the LLM API when answering questions.<br>
-            For sensitive documents, use a local model via Ollama. Free tool provided "as is" without warranty or support.<br>
+    st.markdown("""
+        <div class="footer-text">
+            <strong>🔐 Privacy First:</strong> Documents are processed locally. Only relevant text chunks are sent to the LLM API.<br>
+            For sensitive documents, use a local model via Ollama.<br>
             <br>
-            <a href="https://github.com/anthropics/pageindex-document-qa" target="_blank">GitHub</a> ·
+            <a href="https://github.com/Shirish-Singh/PageIndexApp" target="_blank">GitHub</a> ·
             Built with <a href="https://github.com/VectifyAI/PageIndex" target="_blank">PageIndex</a> ·
             MIT License
         </div>
-        """,
-        unsafe_allow_html=True
-    )
+    """, unsafe_allow_html=True)
 
 
 def main():
@@ -709,59 +726,280 @@ def main():
         initial_sidebar_state="expanded"
     )
 
-    # Custom CSS for better styling
+    # Clean, Professional CSS - Inspired by Notion/Linear
     st.markdown("""
         <style>
+        /* Import Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        /* Global font & colors */
+        html, body, [class*="css"] {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
         /* Main container */
         .main .block-container {
-            padding-top: 2rem;
+            padding-top: 1.5rem;
             padding-bottom: 2rem;
+            max-width: 1200px;
         }
 
-        /* Headers */
-        h1 {
-            color: #1E3A5F;
+        /* Hero header - Clean dark slate */
+        .hero-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #334155;
+        }
+        
+        .hero-header h1 {
+            color: #f8fafc !important;
+            font-size: 2rem !important;
+            font-weight: 700 !important;
+            margin-bottom: 0.5rem !important;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-header p {
+            color: #94a3b8 !important;
+            font-size: 1.05rem !important;
+            margin: 0 !important;
+        }
+        
+        .hero-badge {
+            background: #0d9488;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Feature cards */
+        .feature-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.25rem;
+            height: 100%;
+            transition: all 0.2s ease;
+        }
+        
+        .feature-card:hover {
+            border-color: #0d9488;
+            background: #f0fdfa;
+        }
+        
+        .feature-icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.6rem;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #0f172a;
+            margin-bottom: 0.4rem;
+        }
+        
+        .feature-desc {
+            font-size: 0.85rem;
+            color: #475569;
+            line-height: 1.5;
         }
 
         /* Chat messages */
         .stChatMessage {
             border-radius: 10px;
         }
+        
+        [data-testid="stChatMessageContent"] {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #1e293b;
+        }
 
         /* Buttons */
         .stButton > button {
-            border-radius: 8px;
+            border-radius: 6px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.15s ease;
+            border: 1px solid #e2e8f0;
         }
-
-        /* File uploader */
-        .stFileUploader {
-            border-radius: 10px;
+        
+        .stButton > button:hover {
+            border-color: #0d9488;
+            color: #0d9488;
         }
-
-        /* Sidebar styling */
-        .css-1d391kg {
-            padding-top: 1rem;
+        
+        .stButton > button[kind="primary"] {
+            background: #0f172a;
+            color: white;
+            border: none;
         }
-
-        /* Info boxes */
-        .stAlert {
-            border-radius: 8px;
+        
+        .stButton > button[kind="primary"]:hover {
+            background: #1e293b;
+            color: white;
         }
 
         /* Download button */
         .stDownloadButton > button {
-            background-color: #4CAF50;
+            background: #0d9488;
             color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        .stDownloadButton > button:hover {
+            background: #0f766e;
+        }
+
+        /* File uploader */
+        [data-testid="stFileUploader"] {
+            border-radius: 10px;
+        }
+
+        /* Sidebar */
+        [data-testid="stSidebar"] {
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
         }
 
         /* Tabs */
         .stTabs [data-baseweb="tab-list"] {
-            gap: 8px;
+            gap: 4px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 8px;
         }
 
         .stTabs [data-baseweb="tab"] {
-            border-radius: 8px;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            color: #475569;
         }
+        
+        .stTabs [aria-selected="true"] {
+            background: white !important;
+            color: #0f172a !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Info/Alert boxes */
+        .stAlert {
+            border-radius: 8px;
+            border-left-width: 3px;
+        }
+        
+        .stSuccess {
+            background: #f0fdf4;
+            border-left-color: #0d9488;
+        }
+        
+        .stInfo {
+            background: #f0f9ff;
+            border-left-color: #0284c7;
+        }
+
+        /* Chat input */
+        [data-testid="stChatInput"] textarea {
+            border-radius: 8px !important;
+            border-color: #e2e8f0 !important;
+        }
+        
+        [data-testid="stChatInput"] textarea:focus {
+            border-color: #0d9488 !important;
+        }
+
+        /* Expander */
+        .streamlit-expanderHeader {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        /* Spinner */
+        .stSpinner > div {
+            border-top-color: #0d9488 !important;
+        }
+
+        /* Footer */
+        .footer-text {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            padding: 2rem 0;
+            line-height: 1.8;
+        }
+        
+        .footer-text a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Status indicator */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-ready {
+            background: #ccfbf1;
+            color: #0f766e;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+        
+        .empty-state h3 {
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .empty-state p {
+            color: #64748b;
+            margin: 0;
+        }
+
+        /* Divider */
+        hr {
+            border: none;
+            height: 1px;
+            background: #e2e8f0;
+            margin: 1.5rem 0;
+        }
+
+        /* Hide Streamlit branding */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
         </style>
     """, unsafe_allow_html=True)
 

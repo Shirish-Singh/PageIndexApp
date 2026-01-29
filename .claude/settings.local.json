@@ -15,7 +15,8 @@
       "Bash(/usr/bin/python3 -m pip install:*)",
       "Bash(/usr/bin/python3:*)",
       "Bash(tee:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
