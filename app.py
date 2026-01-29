@@ -1007,6 +1007,20 @@ def main():
             background: transparent;
         }
         
+        /* ========== FORCE DARK MODE SIDEBAR ========== */
+        /* Target Streamlit's dark theme specifically */
+        [data-theme="dark"] [data-testid="stSidebar"] > div,
+        [data-theme="dark"] [data-testid="stSidebarContent"],
+        [data-theme="dark"] .st-emotion-cache-1gv3huu,
+        [data-theme="dark"] .st-emotion-cache-6qob1r,
+        [data-theme="dark"] section[data-testid="stSidebar"] {
+            background-color: #0e1117 !important;
+        }
+        
+        [data-theme="dark"] [data-testid="stSidebar"] {
+            background-color: #0e1117 !important;
+        }
+        
         /* ========== DARK MODE SUPPORT ========== */
         /* Streamlit dark mode detection */
         @media (prefers-color-scheme: dark) {
@@ -1081,11 +1095,21 @@ def main():
             color: #64748b;
         }
         
-        /* Dark mode: Sidebar */
-        [data-testid="stAppViewContainer"][data-theme="dark"] [data-testid="stSidebar"],
-        [data-theme="dark"] [data-testid="stSidebar"] {
-            background: #1e293b;
-            border-right-color: #334155;
+        /* Dark mode: Sidebar - force dark background */
+        [data-testid="stSidebar"][data-testid="stSidebar"] {
+            background: var(--background-color) !important;
+        }
+        
+        .st-emotion-cache-1gv3huu, .st-emotion-cache-6qob1r,
+        [data-testid="stSidebarContent"] {
+            background: transparent !important;
+        }
+        
+        /* Explicit dark mode sidebar */
+        @media (prefers-color-scheme: dark) {
+            [data-testid="stSidebar"] {
+                background: #0e1117 !important;
+            }
         }
         
         /* Dark mode: Tabs */
